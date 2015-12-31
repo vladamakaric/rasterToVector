@@ -1,4 +1,4 @@
-from vec2D import Vec2D
+from vec2 import *
 
 class Rect:
 	def __init__(self,topLeft, width, height):

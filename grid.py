@@ -1,4 +1,4 @@
-from vec2D import *
+from vec2 import *
 import copy
 
 
@@ -12,9 +12,9 @@ class Grid:
 		self.cellHeight = float(rect.height)/rowNum
 
 	def getCenterOfGridCell(self,i,j):
-		realCoord = Vec2D(i*self.cellWidth,j*self.cellHeight)
-		return self.rect.topLeft + realCoord + Vec2D(self.cellWidth, self.cellHeight)/2.0
+		realCoord = Vec2(i*self.cellWidth,j*self.cellHeight)
+		return self.rect.topLeft + realCoord + Vec2(self.cellWidth, self.cellHeight)/2.0
 
 	def getTopLeftOfGridCell(self,i,j):
-		realCoord = Vec2D(i*self.cellWidth,j*self.cellHeight)
+		realCoord = Vec2(i*self.cellWidth,j*self.cellHeight)
 		return self.rect.topLeft + realCoord 

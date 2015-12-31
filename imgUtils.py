@@ -9,9 +9,9 @@ def getBinImg(path):
 
 	binImg = []
 
-	for i in xrange(0, im.size[0]):
+	for j in xrange(0, im.size[1]):
 		binRow = []
-		for j in xrange(0, im.size[1]):
+		for i in xrange(0, im.size[0]):
 			binRow.append(1*pixelFilled(pix[i,j]))
 		binImg.append(binRow)
 
@@ -25,7 +25,7 @@ def printBinImg(bi):
 		print strRow
 
 
-# ib = getBinImg("img/1.png")
+# ib = getBinImg("img/2.png")
 # printBinImg(ib)
 
 		
