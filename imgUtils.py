@@ -25,6 +25,4 @@ def printBinImg(bi):
 		print strRow
 
 
-ib = getBinImg("img/2.png")
-printBinImg(ib)
 

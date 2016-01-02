@@ -30,6 +30,25 @@ def getUpperLeftFilledPixelCoords(binImg):
 # def getClosedPathsFromBinImage(binImg):
 #
 
+# def denormalizeNextDirection(direction, newDirectionNormalized):
+
+
+def normalize4PixelNeighborhood(neighborhood, direction):
+	angle = math.degrees(math.atan2(direction.x, direction.y)) + 270
+	if angle > 360: angle -= 360
+
+	cwRotNum = int(angle)/90
+
+	for _ in xrange(0,cwRotNum):
+		neighborhood = rotateMatrix90DegCW(neighborhood)
+
+	return neighborhood
+
+
+
+def rotateMatrix90DegCW(mat):
+	return zip(*mat[::-1])
+
 def get4PixelNeighborhood(binImg, coord):
 	cols = len(binImg)
 	rows = len(binImg[0])
@@ -38,14 +57,23 @@ def get4PixelNeighborhood(binImg, coord):
 
 	directions = [Vec2(0,0), Vec2(-1,0), Vec2(0,-1), Vec2(-1,-1)]
 	neighborCoords = (coord + vec for vec in directions)
-	filledNeighborCoords = (nc for nc in neighborCoords if isValidMatrixIndex(binImg, nc.y, nc.x) and binImg[nc.y][nc.x]==1)
+	
+	filledNeighborCoords = (nc for nc in neighborCoords if isValidMatrixIndex(rows, cols, nc.y, nc.x) and binImg[nc.y][nc.x]==1)
+
 
 	for relativeCoord in (nc - (coord + Vec2(-1,-1)) for nc in filledNeighborCoords):
 		neighborhood[relativeCoord.y][relativeCoord.x] = 1
 			
 	return neighborhood
 
+def getNextPathDir(binImg, currentCoord, prevCoord):
+	neighborhood = get4PixelNeighborhood(binImg, currentCoord)
+	direction = currentCoord - prevCoord
 
 	
-	
-	
+
+
+
+
+
+
