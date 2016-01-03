@@ -18,6 +18,9 @@ class Vec2:
 	def inner(self, other):
 		return self.x*other.x + self.y*other.y
 
+	def perpCW(self):
+		return Vec2(self.y, -self.x)
+
 	def __mul__(self, other):
 		if type(other) == type(self):
 			return self.inner(other)
