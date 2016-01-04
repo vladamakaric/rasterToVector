@@ -8,6 +8,14 @@ def cyclicLinearOrder(a,b,c):
 	else:
 		return a<=b or b<=c
 
+def cyclicStrictLinearOrder(a,b,c):
+	if a<c:
+		return a<b and b<c
+	elif a>c:
+		return a<b or b<c
+	else:
+		return False
+
 def getPositiveAndNegativeConstraintDelta(delta):
 	pos = delta.perpCW().normalizeCoordinatewise()
 	neg = -pos
@@ -82,6 +90,26 @@ def getPossiblePolygonImplicitGraph(path):
 
 		lastIndex[startIndex] = (nextIndex-1)%n
 
+
+	i = n-1
+
+	while i!=0:
+		end = lastIndex[i]
+		nextEnd = lastIndex[(i+1)%n]
+
+		if cyclicStrictLinearOrder(i, nextEnd, end):
+			lastIndex[i] = nextEnd
+
+		i-=1
+
+
+
+		
+
+
+
+	
+	
 
 	return lastIndex
 

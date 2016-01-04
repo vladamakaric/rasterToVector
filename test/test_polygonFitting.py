@@ -24,8 +24,4 @@ def test_getPossiblePolygonImplicitGraph():
 	path2 = [Vec2(3,0),Vec2(3,-1),Vec2(3,-2),Vec2(2,-2),Vec2(1,-2),Vec2(0,-2),Vec2(0,-3),
 			 Vec2(1,-3),Vec2(2,-3),Vec2(3,-3),Vec2(4,-3),Vec2(4,-2),Vec2(4,-1), Vec2(4,0)]
 
-	print getPossiblePolygonImplicitGraph(path2)
-
-	assert False
-
-
+	assert getPossiblePolygonImplicitGraph(path2) == [4, 7, 7, 7, 10, 11, 11, 11, 12, 0, 1, 1, 4, 4]
