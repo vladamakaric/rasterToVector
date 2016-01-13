@@ -1,25 +1,25 @@
 from copy import copy, deepcopy
 from collections import deque
+import numpy as np
 
 class FloydWarshal:
 	def __init__(self, edgeWeightMatrix):
 
-		n = len(edgeWeightMatrix)
+		n = edgeWeightMatrix.shape[0]
 
-		currentPredecessors = [ n*[None] for _ in xrange(0, n) ]
+		currentPredecessors = np.full( (n,n), -1, dtype=np.int64 )
 
 		for i in xrange(0,n):
 			for j in xrange(0,n):
 				if (i != j and edgeWeightMatrix[i][j] < float("inf")):
 					currentPredecessors[i][j] = i
 
-		print currentPredecessors
 		
 		currentPathLengths = edgeWeightMatrix
 
 		for k in xrange(0,n):
-			nextPathLengths = deepcopy(currentPathLengths)
-			nextPredecessors = deepcopy(currentPredecessors)
+			nextPathLengths = np.array(currentPathLengths)
+			nextPredecessors = np.array(currentPredecessors)
 
 			for i in xrange(0,n):
 				for j in xrange(0,n):
