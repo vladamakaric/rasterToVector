@@ -1,5 +1,5 @@
 from copy import copy, deepcopy
-
+from collections import deque
 
 class FloydWarshal:
 	def __init__(self, edgeWeightMatrix):
@@ -37,4 +37,16 @@ class FloydWarshal:
 	def getShortestPathLenth(self, i,j):
 		return shortestPathLengths[i][j]
 
+	def getShortestPath(self, i, j):
+		path = deque([j])
 
+		node = j
+
+		while True: 
+			node = self.predecessors[i][node]
+			path.appendleft(node)
+
+			if node == i:
+				break
+
+		return list(path)
