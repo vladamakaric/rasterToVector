@@ -102,25 +102,4 @@ def getPossiblePolygonImplicitGraph(path):
 
 		i-=1
 
-
-
-		
-
-
-
-	
-	
-
 	return lastIndex
-
-
-		
-
-
-
-
-
-
-
-
-
