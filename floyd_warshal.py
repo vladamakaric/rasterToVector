@@ -37,7 +37,7 @@ class FloydWarshal:
 	def getShortestPathLenth(self, i,j):
 		return shortestPathLengths[i][j]
 
-	def getShortestPath(self, i, j):
+	def getShortestPathDeque(self, i, j):
 		path = deque([j])
 
 		node = j
@@ -49,4 +49,4 @@ class FloydWarshal:
 			if node == i:
 				break
 
-		return list(path)
+		return path

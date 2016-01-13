@@ -44,4 +44,4 @@ def test_shortest_cycles():
 			[2, 1, 3, 2],
 			[3, 2, 1, 3]])
 
-	assert fw2.getShortestPath(0,0) == [0, 2, 1, 0]
+	assert list(fw2.getShortestPathDeque(0,0)) == [0, 2, 1, 0]
