@@ -1,4 +1,4 @@
-from contourExtraction import *
+from contour_extraction import *
 
 def test_get_4_pixel_neighborhood():
 	binimg = [[ 0, 0, 1, 1],
@@ -59,3 +59,7 @@ def test_extract_shape_contour_from_binimg():
 
 	assert extractShapeContourPathFromBinImg(binimg2) == [Vec2(1,2), Vec2(1,3), Vec2(1,4), Vec2(2,4),
 		Vec2(3,4), Vec2(3,3), Vec2(4,3), Vec2(4,2), Vec2(3,2), Vec2(2,2)]
+
+
+
+

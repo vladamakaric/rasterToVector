@@ -4,12 +4,12 @@ import math
 class PathVariance:
 	def __init__(self, path):
 		self.path = path
-		n = len(path)
-		self.psX = np.zeros(n)
-		self.psY = np.zeros(n)
-		self.psXY = np.zeros(n)
-		self.psYY = np.zeros(n)
-		self.psXX = np.zeros(n)
+		self.n = len(path)
+		self.psX = np.zeros(self.n)
+		self.psY = np.zeros(self.n)
+		self.psXY = np.zeros(self.n)
+		self.psYY = np.zeros(self.n)
+		self.psXX = np.zeros(self.n)
 		
 		curpsX = 0
 		curpsY = 0
@@ -17,7 +17,7 @@ class PathVariance:
 		curpsXY = 0
 		curpsYY = 0
 
-		for i in xrange(0,n):
+		for i in xrange(0,self.n):
 			curpsX += path[i].x
 			curpsY += path[i].y
 			curpsXX += path[i].x**2
@@ -48,7 +48,7 @@ class PathVariance:
 		cyclicDiff = j-i + 1
 
 		if i>j:
-			cyclicDiff = n - i + j + 1
+			cyclicDiff = self.n - i + j + 1
 
 		eX = getRangeSum(self.psX, i, j)/cyclicDiff
 		eY = getRangeSum(self.psY, i, j)/cyclicDiff

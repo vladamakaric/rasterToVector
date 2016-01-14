@@ -3,7 +3,7 @@ from collections import deque
 import numpy as np
 
 class FloydWarshal:
-	def __init__(self, edgeWeightMatrix):
+	def __init__(self, edgeWeightMatrix, inf=np.inf):
 
 		n = edgeWeightMatrix.shape[0]
 
@@ -11,13 +11,13 @@ class FloydWarshal:
 
 		for i in xrange(0,n):
 			for j in xrange(0,n):
-				if (i != j and edgeWeightMatrix[i][j] < float("inf")):
+				if (i != j and edgeWeightMatrix[i][j] < inf):
 					currentPredecessors[i][j] = i
-
 		
 		currentPathLengths = edgeWeightMatrix
 
 		for k in xrange(0,n):
+
 			nextPathLengths = np.array(currentPathLengths)
 			nextPredecessors = np.array(currentPredecessors)
 
@@ -34,9 +34,14 @@ class FloydWarshal:
 		self.shortestPathLengths = currentPathLengths
 		self.predecessors = currentPredecessors
 
-	def getShortestPathLenth(self, i,j):
-		return shortestPathLengths[i][j]
+	def isConnected(self, i, j):
+		return shortestPathLengths[i][j] != inf
 
+
+	def getShortestPathLength(self, i,j):
+		return self.shortestPathLengths[i][j]
+
+	#prerequisity is that shortest path exists, i.e. shortestPathLengths[i][j] != inf
 	def getShortestPathDeque(self, i, j):
 		path = deque([j])
 

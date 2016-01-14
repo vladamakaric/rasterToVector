@@ -1,5 +1,5 @@
 from vec2 import *
-
+from utils import cyclicRange
 
 #is a<=b<=c, ordered modulo n
 def cyclicLinearOrder(a,b,c):
@@ -41,7 +41,6 @@ def updateAngleConstraints(posAngleConstraint, negAngleConstraint, delta):
 
 	return newPAC, newNAC
 
-
 def getPossiblePolygonImplicitGraph(path):
 
 	n = len(path)
@@ -49,7 +48,7 @@ def getPossiblePolygonImplicitGraph(path):
 
 	for startIndex in xrange(n-1, -1, -1):
 
-		print  "Start index ", startIndex
+		# print  "Start index ", startIndex
 
 		nextIndex = (startIndex+2)%n
 
@@ -63,7 +62,7 @@ def getPossiblePolygonImplicitGraph(path):
 		while nextIndex!=startIndex:
 
 			if startIndex < n-1 and not cyclicLinearOrder(startIndex, nextIndex, lastIndex[startIndex+1]):
-				print "cycle"
+				# print "cycle"
 				break
 			
 			direction = path[nextIndex] - path[(nextIndex-1)%n]
@@ -71,13 +70,13 @@ def getPossiblePolygonImplicitGraph(path):
 			directions.add(direction)
 
 			if len(directions) == 4:
-				print "dir"
+				# print "dir"
 				break
 
 		 	delta = path[nextIndex] - path[startIndex] 
 
 			if negAngleConstraint.cross(delta) > 0 or posAngleConstraint.cross(delta) < 0:
-				print "angleC"
+				# print "angleC"
 				break
 
 			if abs(delta.x) >1 or abs(delta.y) >1:
@@ -103,3 +102,48 @@ def getPossiblePolygonImplicitGraph(path):
 		i-=1
 
 	return lastIndex
+
+def getPossiblePolygonContractedEdges(implicitGraph):
+
+    n = len(implicitGraph)
+    edges = []
+
+    for i in xrange(0,n):
+
+            # i and j are connected if in the implicitGraph path[i-1] and path[j+1] are connected by straight line
+            lastIndex = implicitGraph[(i-1)%n] #exclusive
+            
+            for j in cyclicRange((i+1)%n, lastIndex, n):
+                edges.append((i,j))
+
+    return  edges
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

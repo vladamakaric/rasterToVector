@@ -9,16 +9,17 @@ def isValidMatrixIndex(rows, cols, j,i):
 def getVec2ListFromTupleList(tlist):
 	return [Vec2(t[0], t[1]) for t in tlist]
 
-
 def cyclicRange(start, end, modulus):
 
 	current = start
 
 	while True:
-		yield current
-		current = (current+1)%modulus
 
 		if current == end:
 			break
+
+		yield current
+		current = (current+1)%modulus
+
 
 
