@@ -15,6 +15,9 @@ class Vec2:
 		y = self.y/norm
 		return Vec2(x,y)
 
+	def getTuple(self):
+		return (self.x, self.y)
+
 	def inner(self, other):
 		return self.x*other.x + self.y*other.y
 
@@ -60,6 +63,6 @@ class Vec2:
 	def __repr__(self):
 		return "x: " + str(self.x) + " y: " + str(self.y)
 
-        def __hash__(self):
-                return hash(tuple([self.x, self.y]))
+	def __hash__(self):
+		return hash(tuple([self.x, self.y]))
         
