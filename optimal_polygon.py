@@ -20,7 +20,6 @@ def getOptimumPathAlignedPolygonIndices(path):
 
 	weightedEdges = [ (i,j,w) for (i,j), w in zip(edges, eweights) ]
 
-	print weightedEdges
 
 	dslwc = DigraphShortestLengthWeightedCycles(weightedEdges, len(path))
 
@@ -31,20 +30,10 @@ def getOptimumPolygonFromOptAlignedPolygon(optAlignedPolyIndices, path):
 	n = len(optAlignedPolyIndices)
 
 	lineIndices = [ (optAlignedPolyIndices[i], optAlignedPolyIndices[(i+1)%n] ) for i in xrange(0,n)]
-
-	print lineIndices
-
 	linePointRanges = [utils.getCyclicArrayRangeInclusive(lindx[0], lindx[1], path) for lindx in lineIndices]
-
-	print linePointRanges
-
 	principalLines = [pca.getPrincipalComponentLine(lpr) for lpr in linePointRanges] 
-
-	print principalLines
-
 	inters = [geometry.getLineIntersection(principalLines[(i-1)%n], principalLines[i]) for i in xrange(0,n)]
 
-	print inters
 	pathPoints = [path[i] for i in optAlignedPolyIndices]
 	bestPoints = [getClosestPointToVecOnUnitSquare(sqCenter, vec) for sqCenter, vec in zip(pathPoints, inters)]
 	
