@@ -57,7 +57,7 @@ class PathVariance:
 		eYY = getRangeSum(self.psYY, i, j)/cyclicDiff
 
 		v = self.path[j] - self.path[i]
-		vbar = (self.path[i] + self.path[j])/2
+		vbar = (self.path[i] + self.path[j])/2.0
 
 		a = eYY - 2*vbar.y*eY + vbar.y**2
 		b = eXY - vbar.x*eY - vbar.y*eX + vbar.x*vbar.y

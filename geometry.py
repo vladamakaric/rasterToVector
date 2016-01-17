@@ -70,8 +70,8 @@ def getClosestPointToVecOnUnitSquare(sqCenter, vec):
 	hlss = [LineSegment(eps[0], eps[1]), LineSegment(eps[3], eps[2])]
 	vlss = [LineSegment(eps[1], eps[2]), LineSegment(eps[0], eps[3])]
 
-	hinters = [getLineLineSegmentIntersection(hLine, hlss[0]), getLineLineSegmentIntersection(hLine, hlss[1])]
-	vinters = [getLineLineSegmentIntersection(vLine, vlss[0]), getLineLineSegmentIntersection(vLine, vlss[1])]
+	hinters = [getLineLineSegmentIntersection(vLine, hlss[0]), getLineLineSegmentIntersection(vLine, hlss[1])]
+	vinters = [getLineLineSegmentIntersection(hLine, vlss[0]), getLineLineSegmentIntersection(hLine, vlss[1])]
 
 	inters = hinters+vinters
 	inters = [i for i in inters if i != None]

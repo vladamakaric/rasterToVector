@@ -41,6 +41,10 @@ def test_closest_point_to_vec_on_unit_square():
 	assert getClosestPointToVecOnUnitSquare(Vec2(0.5, 0.5), vec) == vec
 	assert getClosestPointToVecOnUnitSquare(Vec2(0.5,0.5), Vec2(1.1, 1)) == Vec2(1,1)
 
+	assert getClosestPointToVecOnUnitSquare(Vec2(0.5,0.5), Vec2(1.1, 2)) == Vec2(1,1)
+	assert getClosestPointToVecOnUnitSquare(Vec2(0.5,0.5), Vec2(0.3, 2)) == Vec2(0.3,1)
+
+	
 
 
 

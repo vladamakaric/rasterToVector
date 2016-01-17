@@ -4,14 +4,13 @@ from scipy import linalg as la
 from line import *
 
 
-def getLeastSquaresLine(vec2Array):
+def getPrincipalComponentLine(vec2Array):
 	xs = np.array([v.x for v in vec2Array])
 	ys = np.array([v.y for v in vec2Array])
 
 	origin = Vec2(np.mean(xs), np.mean(ys))
 
 	C = np.cov(xs - origin.x, ys - origin.y)
-
 
 	evals, evecs = la.eig(C)
 

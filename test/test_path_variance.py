@@ -17,3 +17,12 @@ def test_path_variance():
 	pv2 = PathVariance(getVec2ListFromTupleList(path2))
 
 	assert pv2.getLineSegmentVariance(0,2) == 0
+
+	pathPos = [(3,3), (3,4), (2,4)]
+	pathNeg = [(3,-3), (3,-4), (2,-4)]
+
+	pospv = PathVariance(getVec2ListFromTupleList(pathPos))
+	negpv = PathVariance(getVec2ListFromTupleList(pathNeg))
+
+	assert pospv.getLineSegmentVariance(0,2) == negpv.getLineSegmentVariance(0,2)
+

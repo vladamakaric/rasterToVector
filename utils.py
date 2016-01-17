@@ -9,6 +9,11 @@ def isValidMatrixIndex(rows, cols, j,i):
 def getVec2ListFromTupleList(tlist):
 	return [Vec2(t[0], t[1]) for t in tlist]
 
+def getCyclicArrayRangeInclusive(start, end, array):
+	n = len(array)
+	return [array[i] for i in cyclicRange(start, (end+1)%n, n)]
+
+
 def cyclicRange(start, end, modulus):
 
 	current = start
