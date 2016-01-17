@@ -9,3 +9,6 @@ class Line:
 	def __repr__(self):
 		return "orig: " + str(self.origin) + " dir: " + str(self.dir)
 
+	@staticmethod
+	def createFrom2Endpoints(v1, v2):
+		return Line(v1, (v2 - v1).normalize())

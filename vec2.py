@@ -6,8 +6,11 @@ class Vec2:
 		self.x = x
 		self.y = y
 
+	def normSq(self):
+		return self.x**2 + self.y**2
+
 	def norm(self):
-		return math.sqrt(self.x**2 + self.y**2)
+		return math.sqrt(self.normSq())
 
 	def normalize(self):
 		norm = self.norm()
@@ -21,18 +24,18 @@ class Vec2:
 	def inner(self, other):
 		return self.x*other.x + self.y*other.y
 
-        def cross(self, other):
-            return self.x*other.y - self.y*other.x
+	def cross(self, other):
+		return self.x*other.y - self.y*other.x
 
 	def perpCW(self):
 		return Vec2(self.y, -self.x)
 
-        def normalizeCoordinatewise(self):
-            coords = [0 if c==0 else c/abs(c) for c in [self.x, self.y]]
-            return Vec2(coords[0], coords[1])
+	def normalizeCoordinatewise(self):
+		coords = [0 if c==0 else c/abs(c) for c in [self.x, self.y]]
+		return Vec2(coords[0], coords[1])
 
-        def __neg__(self):
-            return Vec2(-self.x, -self.y)
+	def __neg__(self):
+		return Vec2(-self.x, -self.y)
 
 	def __mul__(self, other):
 		if type(other) == type(self):
@@ -55,6 +58,7 @@ class Vec2:
 		return Vec2(self.x - other.x, self.y - other.y)
 
 	def __eq__(self, other): 
+			if other == None: return False
 			return self.x == other.x and self.y == other.y
 
 	def __ne__(self, other): 
