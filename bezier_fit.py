@@ -38,6 +38,14 @@ def _computeMaxErrorSq(innerPoints, bezCP, innerParams):
 
 	return maxDist, splitPoint+1
 
+def getBezierCurveListToFitPoints(points):
+	if len(points)<4: return None
+
+	t1 = points[1] - points[0]
+	t2 = points[-2] - points[-1]
+
+	return getBezierFit(t1,t2, points)
+
 def getBezierFit(t1, t2, points, eps=2, psy=15, iterNum=15):
 
 	innerPointsParams = _getCoordLengthParameterization(points)[1:-1]
@@ -45,7 +53,6 @@ def getBezierFit(t1, t2, points, eps=2, psy=15, iterNum=15):
 	innerPoints = points[1:-1]
 
 	errSq, splitIndex = _computeMaxErrorSq(innerPoints, bezCP, innerPointsParams)
-	print errSq
 
 	if errSq < eps**2:
 		return [bezCP]
@@ -59,46 +66,56 @@ def getBezierFit(t1, t2, points, eps=2, psy=15, iterNum=15):
 			if errSq < eps**2:
 				return [bezCP]
 
-	splitIndex = _getBestSplit(points, splitIndex)
-	if splitIndex == None:
+	if len(points)==4:
 		return [bezCP]
-	
-	print splitIndex
 
 	beziers = []
-	splitTangent = _getFirstPartOfSplitTangent(points, splitIndex)
-	print points[:splitIndex+1]
-	beziers += getBezierFit(t1, splitTangent, points[:splitIndex+1])
-	print points[splitIndex:]
-	beziers += getBezierFit(-splitTangent, t2, points[splitIndex:])
+	lpts, rpts, splitTan = _getLeftAndRightPointsAndLeftCenterTangent(t1,t2, points, splitIndex)
+
+	beziers += getBezierFit(t1, splitTan, lpts)
+	beziers += getBezierFit(-splitTan, t2, rpts)
 	return beziers
 
 def _getFirstPartOfSplitTangent(points, splitIndex):
 	return (points[splitIndex-1] - points[splitIndex+1]).normalize()
 
-# def _getLeftAndRightPointsAndLeftTangent(points, splitIndex):
-# 	splitIndex = _getBestSplit(points, splitIndex)
-
-
-def _getBestSplit(points, splitIndex):
-
+def _getLeftAndRightPointsAndLeftCenterTangent(t1, t2, points, splitIndex):
 	n = len(points)
+	print n
 
-	if 3 <= splitIndex <= n-4:
-		return splitIndex
+	if 0 >=  splitIndex or splitIndex >= n-1:
+		splitIndex = n/2
 
+	leftTangnt = _getFirstPartOfSplitTangent(points, splitIndex)
 
-	if 3 <= n/2 <= n-4:
-		return n/2
+	lpoints = _getProcessedPoints(t1, leftTangnt, points[:splitIndex+1])
+	rpoints = _getProcessedPoints(-leftTangnt, t2, points[splitIndex:])
 
-	return None
+	return lpoints, rpoints, leftTangnt
+	
+def _getProcessedPoints(t1, t2, points):
 
+	if len(points) > 3:
+		return points
 
+	newPts = [None]*4
 
+	if len(points) == 2:
+		dist = (points[0] - points[1]).norm()
+		newPts[0] = points[0]
+		newPts[1] = points[0] + t1*dist*0.25
+		newPts[2] = points[1] + t2*dist*0.25
+		newPts[3] = points[1]
+	elif len(points) == 3:
+		midpoint = points[1]
+		lToM = midpoint - points[0]
+		rToM = midpoint - points[2]
+		newPts[0] = points[0]
+		newPts[1] = points[0] + lToM*0.9
+		newPts[2] = points[2] + rToM*0.9
+		newPts[3] = points[2]
 
-
-
-
+	return newPts
 
 def _getImprovedPointParam(bezCP, point, t):
 	Q = bezier_curve.Q(bezCP, t)
@@ -112,8 +129,6 @@ def _getImprovedPointParam(bezCP, point, t):
 		return t
 	else:
 		return t - nom/denom
-
-
 
 def _getBezierFitParameterized(t1, t2, points, innerPointsParams):
 	u = innerPointsParams

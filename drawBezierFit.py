@@ -64,8 +64,8 @@ bez2 = [Vec2(0,0), Vec2(0,300), Vec2(400,300), Vec2(400,0)]
 # bez2RefP = discretizeBezierCurve(bez2, pnum)
 # beziers = bezier_fit.getBezierFit(Vec2(0,1), Vec2(0,1), bez2RefP)
 
-t1, t2 = bezier_fit._getPathEndpointTangents(points)
-beziers = bezier_fit.getBezierFit(t1,t2,points)
+# t1, t2 = bezier_fit._getPathEndpointTangents(points)
+beziers = bezier_fit.getBezierCurveListToFitPoints(points)
 
 
 while not done:
@@ -92,8 +92,6 @@ while not done:
 	# pygame.gfxdraw.bezier(screen, getTupleListFromVec2List(bez), 30, RED)
 	# drawBezierCurve(halfCBez, 10, BLUE)
 
-	drawVector(points[0], t1*100, GREEN)
-	drawVector(points[-1], t2*100, GREEN)
 
 	pygame.display.flip()
 
