@@ -11,6 +11,7 @@ from copy import copy
 
 import contour_extraction
 import optimal_polygon
+import polygon_curve_fit
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -38,7 +39,7 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 done = False
 
-binImg = imgUtils.getBinImg('img/5.png')
+binImg = imgUtils.getBinImg('img/4.png')
 biSize = len(binImg), len(binImg[0])
 
 imgGrid = Grid(len(binImg), len(binImg[0]), Rect(Vec2(0,0), size[0], size[1]))
@@ -46,6 +47,9 @@ imgGrid = Grid(len(binImg), len(binImg[0]), Rect(Vec2(0,0), size[0], size[1]))
 path = contour_extraction.extractShapeContourPathFromBinImg(binImg)
 poly = optimal_polygon.getOptimalPolygonFromPath(path)
 
+poly2 = [ Vec2(v.x*imgGrid.cellWidth, v.y*imgGrid.cellHeight) for v in poly ]
+
+bCurves = polygon_curve_fit.getPolygonBezierCurveList(poly2)
 
 while not done:
  
@@ -54,10 +58,12 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done=True 
-
  
     screen.fill(WHITE)
     drawBinImgOnGrid(binImg, imgGrid)
+
+    for bezCP in bCurves: 
+        pygame.gfxdraw.bezier(screen, getTupleListFromVec2List(bezCP), 30, GREEN)
 
     pygame.gfxdraw.bezier(screen, [(0,0), (100,0), (320,640), (0,640)], 30, RED)
 

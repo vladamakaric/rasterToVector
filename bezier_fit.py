@@ -3,11 +3,14 @@ import numpy as np
 import utils
 import bezier_curve
 
-def getBezierCurveListToFitPoints(points):
-	if len(points)<4: return None
+def getBezierCurveListToFitPoints(points, t1=None, t2=None):
+	if t1==None:
+		t1 = (points[1] - points[0]).normalize()
+		t2 = (points[-2] - points[-1]).normalize()
+	elif t2==None:
+		t2 = (points[-2] - points[-1]).normalize()
 
-	t1 = points[1] - points[0]
-	t2 = points[-2] - points[-1]
+	points = _getProcessedPoints(t1, t2, points)
 
 	return _getBezierFit(t1,t2, points)
 

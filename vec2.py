@@ -9,6 +9,16 @@ class Vec2:
 	def normSq(self):
 		return self.x**2 + self.y**2
 
+	def positiveAngleTo(self, other):
+		dot = self.inner(other)
+		cross = self.cross(other)
+		ang = math.atan2(cross, dot)
+
+		if ang<0:
+			ang = 2*math.pi+ang
+
+		return ang
+
 	def norm(self):
 		return math.sqrt(self.normSq())
 
