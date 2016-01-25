@@ -9,7 +9,7 @@ def _bern3(i,t):
 
 def _getPathEndpointTangents(path):
 	n = len(path)
-	neighborhood = max(n/3,1)
+	neighborhood = 1
 
 	t1 = utils.avg(list(utils.changeReferencePoint(path[1:1+neighborhood], path[0]))).normalize()
 	t2 = utils.avg(list(utils.changeReferencePoint(path[-2:-2-neighborhood:-1], path[-1]))).normalize()
@@ -39,6 +39,7 @@ def _computeMaxErrorSq(innerPoints, bezCP, innerParams):
 	return maxDist, splitPoint+1
 
 def getBezierFit(t1, t2, points, eps=2, psy=15, iterNum=15):
+
 	innerPointsParams = _getCoordLengthParameterization(points)[1:-1]
 	bezCP = _getBezierFitParameterized(t1, t2, points, innerPointsParams)
 	innerPoints = points[1:-1]
@@ -51,15 +52,53 @@ def getBezierFit(t1, t2, points, eps=2, psy=15, iterNum=15):
 
 	if errSq < psy**2:
 		for i in xrange(0,iterNum):
-			innerPointsParams = [_getImprovedPointParam(bezCP, p, t) for  p,t in zip(points[1:-1], innerPointsParams)] 
+			innerPointsParams = [_getImprovedPointParam(bezCP, p, t) for  p,t in zip(innerPoints, innerPointsParams)] 
 			bezCP = _getBezierFitParameterized(t1, t2, points, innerPointsParams)
 			errSq, splitIndex = _computeMaxErrorSq(innerPoints, bezCP, innerPointsParams)
-			print errSq
 
 			if errSq < eps**2:
 				return [bezCP]
 
-	return [bezCP]
+	splitIndex = _getBestSplit(points, splitIndex)
+	if splitIndex == None:
+		return [bezCP]
+	
+	print splitIndex
+
+	beziers = []
+	splitTangent = _getFirstPartOfSplitTangent(points, splitIndex)
+	print points[:splitIndex+1]
+	beziers += getBezierFit(t1, splitTangent, points[:splitIndex+1])
+	print points[splitIndex:]
+	beziers += getBezierFit(-splitTangent, t2, points[splitIndex:])
+	return beziers
+
+def _getFirstPartOfSplitTangent(points, splitIndex):
+	return (points[splitIndex-1] - points[splitIndex+1]).normalize()
+
+# def _getLeftAndRightPointsAndLeftTangent(points, splitIndex):
+# 	splitIndex = _getBestSplit(points, splitIndex)
+
+
+def _getBestSplit(points, splitIndex):
+
+	n = len(points)
+
+	if 3 <= splitIndex <= n-4:
+		return splitIndex
+
+
+	if 3 <= n/2 <= n-4:
+		return n/2
+
+	return None
+
+
+
+
+
+
+
 
 def _getImprovedPointParam(bezCP, point, t):
 	Q = bezier_curve.Q(bezCP, t)
