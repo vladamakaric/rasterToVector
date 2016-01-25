@@ -2,7 +2,24 @@ from vec2 import *
 from gridNode import *
 from utils import *
 
-def getUpperLeftFilledPixelCoords(binImg):
+def extractShapeContourPathFromBinImg(binImg):
+
+	startCoord = _getUpperLeftFilledPixelCoords(binImg)
+	prevCoord = startCoord
+	currentCoord = startCoord + Vec2(0,1)
+
+	# every path starts downward on the left edge of the first pixel
+	path = [startCoord]
+
+	while currentCoord != startCoord:
+		path.append(currentCoord)
+		moveDir = _getNextPathDir(binImg, currentCoord, prevCoord)
+		prevCoord = currentCoord
+		currentCoord += moveDir
+
+	return path
+
+def _getUpperLeftFilledPixelCoords(binImg):
 	cols = len(binImg)
 	rows = len(binImg[0])
 
@@ -12,60 +29,39 @@ def getUpperLeftFilledPixelCoords(binImg):
 
 # def getClosedPathsFromBinImage(binImg):
 
-def extractShapeContourPathFromBinImg(binImg):
-
-	startCoord = getUpperLeftFilledPixelCoords(binImg)
-	prevCoord = startCoord
-	currentCoord = startCoord + Vec2(0,1)
-
-	# every path starts downward on the left edge of the first pixel
-	path = [startCoord]
-
-	while currentCoord != startCoord:
-		path.append(currentCoord)
-		moveDir = getNextPathDir(binImg, currentCoord, prevCoord)
-		prevCoord = currentCoord
-		currentCoord += moveDir
-
-
-	print path
-	return path
-
-def getNormalizedNeighborhoodNextDir(neighborhood):
+def _getNormalizedNeighborhoodNextDir(neighborhood):
 	if neighborhood[0][0] == 0: return Vec2(-1, 0)
 	if neighborhood[0][1] == 0: return Vec2(0, 1)
 	return Vec2(1,0)
 
 #returns direction in matrix coordinates (reverse y axis)
-def getNextPathDir(binImg, currentCoord, prevCoord):
+def _getNextPathDir(binImg, currentCoord, prevCoord):
 	direction = currentCoord - prevCoord
 
 	#convert direction to math coordinates (matrix coords have y axis negative)
 	direction.y *= -1
 
-	neighborhood = get4PixelNeighborhood(binImg, currentCoord)
+	neighborhood = _get4PixelNeighborhood(binImg, currentCoord)
 
-	neighborhood = normalize4PixelNeighborhood(neighborhood, direction)
+	neighborhood = _normalize4PixelNeighborhood(neighborhood, direction)
 	
-	normNextDir = getNormalizedNeighborhoodNextDir(neighborhood)
+	normNextDir = _getNormalizedNeighborhoodNextDir(neighborhood)
 
-	mathCoordsNextDir = denormalizeNextDirection(direction, normNextDir)
+	mathCoordsNextDir = _denormalizeNextDirection(direction, normNextDir)
 
 	#convert direction to matrix coordinates
 	return Vec2(mathCoordsNextDir.x, -mathCoordsNextDir.y)
 
-def denormalizeNextDirection(direction, newDirectionNormalized):
+def _denormalizeNextDirection(direction, newDirectionNormalized):
 	yaxis = direction
 	xaxis = direction.perpCW()
 
 	return newDirectionNormalized.x*xaxis + newDirectionNormalized.y*yaxis
 
 #direction is in regular math coordinates (not reverse y axis matrix coordinates)
-def normalize4PixelNeighborhood(neighborhood, direction):
+def _normalize4PixelNeighborhood(neighborhood, direction):
 	yaxis = direction
 	xaxis = direction.perpCW()
-
-	print yaxis, xaxis
 	
 	#coords in the right handed coordinate system where the direction is the y axis
 	normalizedNeighborCoords = [Vec2(0,0), Vec2(1,0), Vec2(1,1), Vec2(0,1)]
@@ -82,7 +78,7 @@ def normalize4PixelNeighborhood(neighborhood, direction):
 
 	return tuple(normalizedNeighborhood[0]), tuple(normalizedNeighborhood[1])
 
-def get4PixelNeighborhood(binImg, coord):
+def _get4PixelNeighborhood(binImg, coord):
 	cols = len(binImg)
 	rows = len(binImg[0])
 

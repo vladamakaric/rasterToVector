@@ -18,6 +18,8 @@ class FloydWarshal:
 
 		for k in xrange(0,n):
 
+			print "FW, iter %d out of %d:" % (k,n) 
+
 			nextPathLengths = np.array(currentPathLengths)
 			nextPredecessors = np.array(currentPredecessors)
 

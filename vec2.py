@@ -40,7 +40,7 @@ class Vec2:
 	def __mul__(self, other):
 		if type(other) == type(self):
 			return self.inner(other)
-		elif type(other) == type(1) or type(other) == type(1.0):
+		else:
 			return Vec2(self.x*other, self.y*other)
 
 	def __rmul__(self, other):

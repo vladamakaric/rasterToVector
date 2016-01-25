@@ -6,26 +6,22 @@ from geometry import *
 import pca
 import utils
 
-def getOptimumPathAlignedPolygonIndices(path):
+def getOptimalPolygonFromPath(path):
+	alignedPathIndices = _getOptimumPathAlignedPolygonIndices(path)
+	return _getOptimumPolygonFromOptAlignedPolygon(alignedPathIndices, path)
+
+def _getOptimumPathAlignedPolygonIndices(path):
 	implicitGraph = getPossiblePolygonImplicitGraph(path)
-
-	print implicitGraph
-
 	edges = getPossiblePolygonContractedEdges(implicitGraph)
 
 	pv = PathVariance(path)
-	
-
 	eweights = [pv.getLineSegmentVariance(i,j) for i,j in edges]
-
 	weightedEdges = [ (i,j,w) for (i,j), w in zip(edges, eweights) ]
-
-
 	dslwc = DigraphShortestLengthWeightedCycles(weightedEdges, len(path))
 
 	return dslwc.getShortestCyclesSet().pop()
 
-def getOptimumPolygonFromOptAlignedPolygon(optAlignedPolyIndices, path):
+def _getOptimumPolygonFromOptAlignedPolygon(optAlignedPolyIndices, path):
 
 	n = len(optAlignedPolyIndices)
 
@@ -38,6 +34,15 @@ def getOptimumPolygonFromOptAlignedPolygon(optAlignedPolyIndices, path):
 	bestPoints = [getClosestPointToVecOnUnitSquare(sqCenter, vec) for sqCenter, vec in zip(pathPoints, inters)]
 	
 	return bestPoints
+
+
+
+
+
+
+
+
+
 
 
 
