@@ -39,7 +39,7 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 done = False
 
-binImg = imgUtils.getBinImg('img/4.png')
+binImg = imgUtils.getBinImg('img/8.png')
 biSize = len(binImg), len(binImg[0])
 
 imgGrid = Grid(len(binImg), len(binImg[0]), Rect(Vec2(0,0), size[0], size[1]))
@@ -49,25 +49,53 @@ poly = optimal_polygon.getOptimalPolygonFromPath(path)
 
 poly2 = [ Vec2(v.x*imgGrid.cellWidth, v.y*imgGrid.cellHeight) for v in poly ]
 
-bCurves = polygon_curve_fit.getPolygonBezierCurveList(poly2)
+def postProcessPolygon(poly):
+    n = len(poly)
+    lens = 0.0
+    for i in xrange(0,n):
+        lens += (poly[i]-poly[(i+1)%n]).norm()
 
+    avg = lens/n
+
+
+    newPoly = []
+    for i in xrange(0,n):
+        newPoly.append(poly[i])
+        l = (poly[i]-poly[(i+1)%n]).norm()
+
+        if l > avg:
+            newPoly.append((poly[i] + poly[(i+1)%n])/2.0)
+
+    return poly
+
+bCurves = polygon_curve_fit.getPolygonBezierCurveList(postProcessPolygon(poly2))
+
+state = 0
+
+numStates = 2
 while not done:
  
     clock.tick(100)
      
     for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                state= (state-1)%numStates
+            if event.key == pygame.K_RIGHT:
+                state= (state+1)%numStates
         if event.type == pygame.QUIT:
             done=True 
  
     screen.fill(WHITE)
-    drawBinImgOnGrid(binImg, imgGrid)
 
-    for bezCP in bCurves: 
-        pygame.gfxdraw.bezier(screen, getTupleListFromVec2List(bezCP), 30, GREEN)
+    if state==1:
+        drawBinImgOnGrid(binImg, imgGrid)
+        drawPolygon(poly, imgGrid, RED)
 
-    pygame.gfxdraw.bezier(screen, [(0,0), (100,0), (320,640), (0,640)], 30, RED)
+    if state==0:
+        for bezCP in bCurves: 
+            pygame.gfxdraw.bezier(screen, getTupleListFromVec2List(bezCP), 30, GREEN)
 
-    drawPolygon(poly, imgGrid, RED)
     pygame.display.flip()
  
 # Be IDLE friendly

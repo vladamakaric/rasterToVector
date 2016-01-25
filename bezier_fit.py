@@ -4,6 +4,7 @@ import utils
 import bezier_curve
 
 def getBezierCurveListToFitPoints(points, t1=None, t2=None):
+
 	if t1==None:
 		t1 = (points[1] - points[0]).normalize()
 		t2 = (points[-2] - points[-1]).normalize()
@@ -42,28 +43,38 @@ def _computeMaxErrorSq(innerPoints, bezCP, innerParams):
 	return maxDist, splitPoint+1
 
 
-def _getBezierFit(t1, t2, points, eps=2, psy=15, iterNum=15):
+def _getBezierFit(t1, t2, points, eps=2, psy=30, iterNum=15):
 
 	innerPointsParams = _getCoordLengthParameterization(points)[1:-1]
 	bezCP = _getBezierFitParameterized(t1, t2, points, innerPointsParams)
-	innerPoints = points[1:-1]
 
-	errSq, splitIndex = _computeMaxErrorSq(innerPoints, bezCP, innerPointsParams)
+	n=len(points)
 
-	if errSq < eps**2:
-		return [bezCP]
+	
+	splitIndex = n/2
+	if bezCP != None:
+		innerPoints = points[1:-1]
 
-	if errSq < psy**2:
-		for i in xrange(0,iterNum):
-			innerPointsParams = [_getImprovedPointParam(bezCP, p, t) for  p,t in zip(innerPoints, innerPointsParams)] 
-			bezCP = _getBezierFitParameterized(t1, t2, points, innerPointsParams)
-			errSq, splitIndex = _computeMaxErrorSq(innerPoints, bezCP, innerPointsParams)
+		errSq, splitIndex = _computeMaxErrorSq(innerPoints, bezCP, innerPointsParams)
 
-			if errSq < eps**2:
-				return [bezCP]
+		if errSq < eps**2:
+			return [bezCP]
 
-	if len(points)==4:
-		return [bezCP]
+		if errSq < psy**2:
+			for i in xrange(0,iterNum):
+				innerPointsParams = [_getImprovedPointParam(bezCP, p, t) for  p,t in zip(innerPoints, innerPointsParams)] 
+				bezCP = _getBezierFitParameterized(t1, t2, points, innerPointsParams)
+
+				if bezCP == None:
+					break
+
+				errSq, splitIndex = _computeMaxErrorSq(innerPoints, bezCP, innerPointsParams)
+
+				if errSq < eps**2:
+					return [bezCP]
+
+		if len(points)==4 and bezCP!=None:
+			return [bezCP]
 
 	beziers = []
 	lpts, rpts, splitTan = _getLeftAndRightPointsAndLeftCenterTangent(t1,t2, points, splitIndex)
@@ -158,4 +169,8 @@ def _getBezierFitParameterized(t1, t2, points, innerPointsParams):
 	a[1][0] = a[0][1]
 
 	alpha = np.linalg.solve(a, b)
+
+	if alpha[0] <0 or alpha[1] <0:
+		return None
+
 	return V0, V0+t1*alpha[0], V3+t2*alpha[1], V3

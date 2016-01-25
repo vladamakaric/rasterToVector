@@ -19,7 +19,12 @@ def getIntVec2List(vec2List):
 
 def getCyclicArrayRangeInclusive(start, end, array):
 	n = len(array)
-	return [array[i] for i in cyclicRange(start, (end+1)%n, n)]
+
+	arr = None
+	if start==(end+1)%n:
+		return [array[i] for i in cyclicRange(start, end, n)] + [array[end]]
+	else:
+		return [array[i] for i in cyclicRange(start, (end+1)%n, n)]
 
 # def getArrayRotatedRight(arr):
 # 	adeq = deque(arr)

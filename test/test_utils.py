@@ -26,4 +26,7 @@ def test_cyclic_array_range_inclusive():
 	assert getCyclicArrayRangeInclusive(3, 1, a) + getCyclicArrayRangeInclusive(1,3,a) == [
 			4,5,1,2,2,3,4]
 
+	assert getCyclicArrayRangeInclusive(1,0, a) == [2,3,4,5,1]
+
+
 
