@@ -1,7 +1,7 @@
 import math
 from vec2 import *
 
-def _bern3(i,t):
+def bern3(i,t):
 	threeChose_i = 6/(math.factorial(i)*math.factorial(3-i))
 	return threeChose_i*( (t**i) * ( (1-t)**(3-i) ) )
 
@@ -9,7 +9,7 @@ def Q(P, t):
 	point = Vec2(0,0)
 
 	for i, cp in enumerate(P):
-		point+=P[i]*_bern3(i,t)
+		point+=P[i]*bern3(i,t)
 
 	return point
 

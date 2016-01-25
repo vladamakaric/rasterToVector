@@ -34,7 +34,6 @@ def drawPoints(points, color):
 def discretizeBezierCurve(bezCP, pointNum):
 	return [bezier_curve.Q(bezCP, t) for t in np.linspace(0, 1, num=pointNum)]
 
-
 def drawBezierCurve(bezCP, pointNum, color):
 	drawPoints(getIntVec2List(discretizeBezierCurve(bezCP, pointNum)), color)
 
@@ -44,7 +43,7 @@ points = getVec2ListFromTupleList([
 	(232, 89),
 	(323, 131),
 	(371, 212),
-	(457, 275),
+	(497, 285),
 	(571, 293),
 	(673, 298)])
 
@@ -77,7 +76,6 @@ while not done:
 			done=True 
 
 	screen.fill(WHITE)
-
 
 	# drawBezierCurve(bez2, pnum, BLUE)
 

@@ -19,5 +19,11 @@ def test_arr_rotate_left():
 def test_vecs_close():
 	assert areVecsClose(Vec2(0.0, 1.00000001), Vec2(0,1))
 
+def test_cyclic_array_range_inclusive():
+
+	a = [1,2,3,4,5]
+
+	assert getCyclicArrayRangeInclusive(3, 1, a) + getCyclicArrayRangeInclusive(1,3,a) == [
+			4,5,1,2,2,3,4]
 
 

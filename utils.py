@@ -65,7 +65,6 @@ def avg(arr):
 
 	return sum/len(arr)
 
-
 def cyclicRange(start, end, modulus):
 
 	current = start

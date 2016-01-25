@@ -16,12 +16,12 @@ class FloydWarshal:
 		
 		currentPathLengths = edgeWeightMatrix
 
+		nextPathLengths = np.array(currentPathLengths)
+		nextPredecessors = np.array(currentPredecessors)
+
 		for k in xrange(0,n):
 
 			print "FW, iter %d out of %d:" % (k,n) 
-
-			nextPathLengths = np.array(currentPathLengths)
-			nextPredecessors = np.array(currentPredecessors)
 
 			for i in xrange(0,n):
 				for j in xrange(0,n):
@@ -30,8 +30,8 @@ class FloydWarshal:
 						nextPathLengths[i][j] = currentPathLengths[i][k] + currentPathLengths[k][j]
 						nextPredecessors[i][j] = currentPredecessors[k][j]
 
-			currentPathLengths = nextPathLengths
-			currentPredecessors = nextPredecessors
+			currentPathLengths[:] = nextPathLengths[:]
+			currentPredecessors[:] = nextPredecessors[:]
 
 		self.shortestPathLengths = currentPathLengths
 		self.predecessors = currentPredecessors
