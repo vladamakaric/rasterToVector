@@ -2,7 +2,7 @@ import math
 import bezier_fit
 from utils import *
 
-def _getPolygonCorners(poly, thresh=0.6):
+def _getPolygonCorners(poly, thresh=0.1):
 
 	n = len(poly)
 
@@ -16,7 +16,7 @@ def _getPolygonCorners(poly, thresh=0.6):
 		v1 = (side1 - middle).normalize()
 		v2 = (side2 - middle).normalize()
 
-		if math.fabs(v1*v2) < thresh:
+                if v1*v2 >= 0 or (v1*v2 < 0 and v1*v2> -thresh):
 			corners.append(i)
 
 	return corners
