@@ -16,9 +16,11 @@ There are several stages to this:
 2. Simplifying the contour, i.e. finding the optimal subpoligon of the original polygon using a modification of Floyd-Warshall.
 3. Further optimizing the polygon by minimizing the variance between every edge and the part of the pixel contour it represents (using Principal Component Analysis).
 4. Corner detection, deciding which points on the polygon will be cusps and which will be smoothed out (G0 and G1 continuity, respectively) in the next phase.
-5. Bezier curve fitting, the polylines between each pair of corners (cusps) are fitted with a continuous chain of 1 or more Bezier curves.
+5. Bezier curve fitting, the polylines between each pair of corners (cusps) are fitted with a smooth (G1 continuous) chain of 1 or more Bezier curves.
 
+This implementation is inspired by [potrace](http://potrace.sourceforge.net/) and by Philip J. Schneider's "An Algorithm for Automatically Fitting Digitized Curves", published in Graphics Gems 1.
 
+This implementation is not efficient or robust (there are many corner cases not delt with).
 
 
 
