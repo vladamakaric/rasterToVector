@@ -39,7 +39,7 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 done = False
 
-binImg = imgUtils.getBinImg('img/1.png')
+binImg = imgUtils.getBinImg('img/7.png')
 biSize = len(binImg), len(binImg[0])
 
 imgGrid = Grid(len(binImg), len(binImg[0]), Rect(Vec2(0,0), size[0], size[1]))
