@@ -1,7 +1,7 @@
 # Vectorization project
 
 This was a research project for my bachelor thesis:
-"Comparison of Algorithms for Bezier Curve Fitting", which deals with fitting Bezier curves to polygons.
+"Comparison of Algorithms for Bezier Curve Fitting", where Bezier curves are used to aproximate (fit) polygons.
 
 The goal of this project is to produce a vector image (e.g. SVG)
 from a raster, this process is known as [image tracing](https://en.wikipedia.org/wiki/Image_tracing) or vectorization.
